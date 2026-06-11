@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acesso — Login</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0A0A0A;
+  --bg-card: #111111;
+  --border: #1F1F1F;
+  --text: #FFFFFF;
+  --text-2: #A1A1AA;
+  --text-3: #52525B;
+  --accent: #22C55E;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  max-width: 390px;
+  margin: 0 auto;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ═══════════════════════════════
+   COMPONENT: Logo
+   ═══════════════════════════════ */
+.logo-area {
+  text-align: center;
+  margin-bottom: 48px;
+}
+.logo-icon {
+  margin-bottom: 16px;
+}
+.logo-text {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: -1px;
+  margin-bottom: 8px;
+}
+.logo-sub {
+  font-size: 14px;
+  color: var(--text-2);
+  font-weight: 400;
+}
+
+/* ═══════════════════════════════
+   COMPONENT: LoginForm
+   ═══════════════════════════════ */
+.login-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.input-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-2);
+}
+.input-field {
+  background: var(--bg-card);
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  width: 100%;
+  transition: border-color 0.15s;
+}
+.input-field::placeholder { color: var(--text-3); }
+.input-field:focus { border-color: var(--accent); }
+
+/* ═══════════════════════════════
+   COMPONENT: PrimaryButton
+   ═══════════════════════════════ */
+.btn-primary {
+  background: var(--accent);
+  color: var(--bg);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  padding: 14px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 4px;
+  transition: opacity 0.15s;
+}
+.btn-primary:active { opacity: 0.85; }
+
+/* ═══════════════════════════════
+   Links
+   ═══════════════════════════════ */
+.forgot-link {
+  text-align: center;
+  margin-top: 8px;
+}
+.forgot-link a {
+  font-size: 13px;
+  color: var(--text-3);
+  text-decoration: none;
+}
+.register-footer {
+  margin-top: 48px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-2);
+}
+.register-footer a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════
+     COMPONENTE: LogoArea
+     Branding principal do app
+     ══════════════════════════════════ -->
+<div class="logo-area">
+  <div class="logo-icon">
+    <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+      <circle cx="28" cy="28" r="26" stroke="#22C55E" stroke-width="1.5" fill="none"></circle>
+      <circle cx="28" cy="28" r="10" stroke="#22C55E" stroke-width="1" fill="none"></circle>
+      <line x1="28" y1="2" x2="28" y2="54" stroke="#22C55E" stroke-width="0.5" opacity="0.3"></line>
+      <line x1="2" y1="28" x2="54" y2="28" stroke="#22C55E" stroke-width="0.5" opacity="0.3"></line>
+    </svg>
+  </div>
+  <div class="logo-text">Acesso</div>
+  <div class="logo-sub">Da várzea à Libertadores.</div>
+</div>
+
+<!-- ══════════════════════════════════
+     COMPONENTE: LoginForm
+     Form de autenticação
+     Props: onSubmit, isLoading
+     ══════════════════════════════════ -->
+<form class="login-form" onsubmit="return false">
+  <div class="input-group">
+    <label class="input-label">E-mail</label>
+    <input type="email" class="input-field" placeholder="seu@email.com">
+  </div>
+  <div class="input-group">
+    <label class="input-label">Senha</label>
+    <input type="password" class="input-field" placeholder="••••••••">
+  </div>
+  <button type="submit" class="btn-primary">Entrar 🟢</button>
+  <div class="forgot-link">
+    <a href="#">Esqueci minha senha</a>
+  </div>
+</form>
+
+<div class="register-footer">
+  Ainda não tem conta? <a href="02-CreateClub.html">Criar conta</a>
+</div>
+
+</body>
+</html>

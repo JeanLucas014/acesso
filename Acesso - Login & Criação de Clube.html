@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acesso — Login & Criação de Clube</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: #050505;
+  color: #FFFFFF;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ═══════════════════════════════
+   HEADER
+   ═══════════════════════════════ */
+.header {
+  text-align: center;
+  padding: 48px 24px 16px;
+}
+.header-logo {
+  font-size: 32px;
+  font-weight: 700;
+  color: #22C55E;
+  letter-spacing: -0.5px;
+  margin-bottom: 6px;
+}
+.header-sub {
+  font-size: 14px;
+  color: #52525B;
+  font-weight: 400;
+}
+
+/* ═══════════════════════════════
+   SCREENS GRID
+   ═══════════════════════════════ */
+.screens {
+  display: flex;
+  gap: 48px;
+  justify-content: center;
+  padding: 32px 24px 48px;
+  flex-wrap: wrap;
+}
+.screen-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.screen-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #A1A1AA;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* ═══════════════════════════════
+   PHONE FRAME
+   ═══════════════════════════════ */
+.phone {
+  width: 375px;
+  height: 812px;
+  border-radius: 44px;
+  border: 4px solid #1F1F1F;
+  overflow: hidden;
+  position: relative;
+  background: #0A0A0A;
+  box-shadow: 0 0 0 1px #111, 0 24px 80px rgba(0,0,0,0.6);
+}
+.phone-notch {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 30px;
+  background: #000;
+  border-radius: 0 0 18px 18px;
+  z-index: 20;
+}
+.phone-notch::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 10px;
+  background: #1a1a1a;
+  border-radius: 50%;
+}
+.phone iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: #0A0A0A;
+}
+
+/* ═══════════════════════════════
+   WIZARD FLOW DIAGRAM
+   ═══════════════════════════════ */
+.flow-section {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 24px 40px;
+}
+.flow-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #52525B;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+}
+.flow-steps {
+  display: flex;
+  gap: 0;
+  align-items: stretch;
+}
+.flow-step {
+  flex: 1;
+  background: #111111;
+  border: 0.5px solid #1F1F1F;
+  padding: 20px 16px;
+  position: relative;
+}
+.flow-step:first-child { border-radius: 10px 0 0 10px; }
+.flow-step:last-child { border-radius: 0 10px 10px 0; }
+.flow-step.active {
+  border-color: #22C55E;
+  background: rgba(34,197,94,0.04);
+}
+.flow-step-num {
+  font-size: 10px;
+  font-weight: 700;
+  color: #52525B;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+.flow-step.active .flow-step-num { color: #22C55E; }
+.flow-step-name {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.flow-step-desc {
+  font-size: 11px;
+  color: #A1A1AA;
+  line-height: 1.5;
+}
+.flow-step-fields {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.flow-field {
+  font-size: 10px;
+  color: #52525B;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.flow-field::before {
+  content: '';
+  width: 3px;
+  height: 3px;
+  border-radius: 1px;
+  background: #22C55E;
+  flex-shrink: 0;
+}
+.flow-arrow {
+  display: flex;
+  align-items: center;
+  color: #1F1F1F;
+  font-size: 18px;
+  padding: 0 2px;
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════════════
+   COMPONENT DOCS
+   ═══════════════════════════════ */
+.docs {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 24px 64px;
+}
+.docs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+@media (max-width: 700px) {
+  .docs-grid { grid-template-columns: 1fr; }
+  .flow-steps { flex-direction: column; }
+  .flow-step:first-child { border-radius: 10px 10px 0 0; }
+  .flow-step:last-child { border-radius: 0 0 10px 10px; }
+  .flow-arrow { transform: rotate(90deg); justify-content: center; }
+}
+.doc-card {
+  background: #111111;
+  border: 0.5px solid #1F1F1F;
+  border-radius: 10px;
+  padding: 20px;
+}
+.doc-card h3 {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.doc-card h3 .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22C55E;
+}
+.doc-section {
+  margin-bottom: 14px;
+}
+.doc-section:last-child { margin-bottom: 0; }
+.doc-section-title {
+  font-size: 10px;
+  font-weight: 600;
+  color: #52525B;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 6px;
+}
+.doc-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.doc-list li {
+  font-size: 12px;
+  color: #A1A1AA;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.doc-list li::before {
+  content: '';
+  width: 4px;
+  height: 4px;
+  border-radius: 1px;
+  background: #22C55E;
+  flex-shrink: 0;
+}
+.tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: rgba(34,197,94,0.1);
+  color: #22C55E;
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-logo">⚽ Acesso</div>
+  <div class="header-sub">Design Handoff — Login & Criação de Clube</div>
+</div>
+
+<!-- PHONE FRAMES -->
+<div class="screens">
+  <div class="screen-col">
+    <span class="screen-label">01 — Login</span>
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <iframe src="design_handoff/01-Login.html" title="Login"></iframe>
+    </div>
+  </div>
+  <div class="screen-col">
+    <span class="screen-label">02 — Criar Clube (Etapa 3: Draft)</span>
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <iframe src="design_handoff/02-CreateClub.html" title="Criar Clube"></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- WIZARD FLOW DIAGRAM -->
+<div class="flow-section">
+  <div class="flow-title">🧙 Wizard — Fluxo de 4 Etapas</div>
+  <div class="flow-steps">
+    <div class="flow-step">
+      <div class="flow-step-num">Etapa 1</div>
+      <div class="flow-step-name">Identidade</div>
+      <div class="flow-step-desc">O jogador define nome, escudo e cores do seu clube.</div>
+      <div class="flow-step-fields">
+        <span class="flow-field">Nome do clube</span>
+        <span class="flow-field">Sigla (3 letras)</span>
+        <span class="flow-field">Cor primária / secundária</span>
+        <span class="flow-field">Formato do escudo (5 opções)</span>
+        <span class="flow-field">Cidade / Estado</span>
+      </div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-num">Etapa 2</div>
+      <div class="flow-step-name">Perfil Financeiro</div>
+      <div class="flow-step-desc">Define a dificuldade inicial — mais grana = jogo mais fácil.</div>
+      <div class="flow-step-fields">
+        <span class="flow-field">Nível de dificuldade (3 tiers)</span>
+        <span class="flow-field">Saldo inicial (R$ 100k–500k)</span>
+        <span class="flow-field">Folha salarial máxima</span>
+        <span class="flow-field">Divisão inicial (Estadual)</span>
+      </div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step active">
+      <div class="flow-step-num">Etapa 3 — Ativa</div>
+      <div class="flow-step-name">Draft Inicial</div>
+      <div class="flow-step-desc">Monta o elenco a partir de um pool de jogadores, respeitando a folha.</div>
+      <div class="flow-step-fields">
+        <span class="flow-field">Pool de ~40 jogadores</span>
+        <span class="flow-field">Card com 5 atributos (barras)</span>
+        <span class="flow-field">Barra de orçamento de folha</span>
+        <span class="flow-field">Min 18, max 22 jogadores</span>
+        <span class="flow-field">Lista "Meu elenco" com remoção</span>
+      </div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-num">Etapa 4</div>
+      <div class="flow-step-name">Formação</div>
+      <div class="flow-step-desc">Escolhe a formação e escalação inicial, já com o campo SVG.</div>
+      <div class="flow-step-fields">
+        <span class="flow-field">Campo SVG (reutiliza PreMatch)</span>
+        <span class="flow-field">Seletor de formação</span>
+        <span class="flow-field">Drag-drop para posições</span>
+        <span class="flow-field">Estilo de jogo inicial</span>
+        <span class="flow-field">Botão "Começar temporada 🚀"</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- COMPONENT DOCUMENTATION -->
+<div class="docs">
+  <div class="docs-grid">
+
+    <!-- Login components -->
+    <div class="doc-card">
+      <h3><span class="dot"></span>Login — Componentes</h3>
+      <div class="doc-section">
+        <div class="doc-section-title">Componentes</div>
+        <ul class="doc-list">
+          <li>LogoArea (ícone SVG + título + subtítulo)</li>
+          <li>InputField <span class="tag">shared</span></li>
+          <li>PrimaryButton <span class="tag">shared</span></li>
+          <li>TextLink</li>
+        </ul>
+      </div>
+      <div class="doc-section">
+        <div class="doc-section-title">Estados</div>
+        <ul class="doc-list">
+          <li>Default (exibido)</li>
+          <li>Loading — botão com spinner, inputs disabled</li>
+          <li>Erro de credenciais — toast "E-mail ou senha incorretos 😬"</li>
+          <li>Campo vazio — borda vermelha + "Preenche aí!"</li>
+          <li>Sucesso → redireciona para Dashboard ou CreateClub</li>
+        </ul>
+      </div>
+      <div class="doc-section">
+        <div class="doc-section-title">Microcopy</div>
+        <ul class="doc-list">
+          <li>Placeholder email → "seu@email.com"</li>
+          <li>Placeholder senha → "••••••••"</li>
+          <li>CTA → "Entrar 🟢"</li>
+          <li>Criar conta → link verde destacado</li>
+          <li>Tagline → "Da várzea à Libertadores."</li>
+        </ul>
+      </div>
+      <div class="doc-section">
+        <div class="doc-section-title">Auth Flow (Supabase)</div>
+        <ul class="doc-list">
+          <li>supabase.auth.signInWithPassword()</li>
+          <li>Se novo usuário sem clube → CreateClub</li>
+          <li>Se tem clube → Dashboard</li>
+          <li>Esqueci senha → supabase.auth.resetPasswordForEmail()</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CreateClub components -->
+    <div class="doc-card">
+      <h3><span class="dot"></span>Criar Clube — Componentes</h3>
+      <div class="doc-section">
+        <div class="doc-section-title">Componentes</div>
+        <ul class="doc-list">
+          <li>StepProgress <span class="tag">wizard</span></li>
+          <li>BudgetBar</li>
+          <li>DraftPlayerCard <span class="tag">grid 2col</span></li>
+          <li>AttributeBar <span class="tag">×5</span></li>
+          <li>PositionBadge <span class="tag">shared</span></li>
+          <li>SelectedRoster (lista compacta)</li>
+          <li>PrimaryButton <span class="tag">shared</span></li>
+        </ul>
+      </div>
+      <div class="doc-section">
+        <div class="doc-section-title">Estados</div>
+        <ul class="doc-list">
+          <li>Draft ativo (exibido)</li>
+          <li>Folha &gt; 90% → barra vermelha + alerta "Cuidado! 💸"</li>
+          <li>Folha 100% → botão "+" desabilitado nos cards</li>
+          <li>Elenco &lt; 18 → botão "Próximo" desabilitado</li>
+          <li>Elenco = 22 → pool oculto + "Time completo! ✅"</li>
+        </ul>
+      </div>
+      <div class="doc-section">
+        <div class="doc-section-title">Microcopy</div>
+        <ul class="doc-list">
+          <li>Título → "Monte seu time dos sonhos (com o orçamento que você tem 😅)"</li>
+          <li>Folha ok → barra verde</li>
+          <li>Folha apertada → barra verde→amarela gradiente</li>
+          <li>Folha estourada → "Sem grana! Tire alguém 💸"</li>
+          <li>CTA etapa 4 → "Próximo: Formação →"</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Navigation flow -->
+    <div class="doc-card">
+      <h3><span class="dot"></span>Fluxo de Navegação</h3>
+      <div class="doc-section">
+        <ul class="doc-list">
+          <li>Login → "Entrar" → Dashboard (se tem clube)</li>
+          <li>Login → "Entrar" → CreateClub (se novo)</li>
+          <li>Login → "Criar conta" → Signup → CreateClub</li>
+          <li>CreateClub Step 1 → 2 → 3 → 4 → Dashboard</li>
+          <li>CreateClub qualquer etapa → "Voltar" → etapa anterior</li>
+          <li>CreateClub etapa 4 → "Começar temporada" → Dashboard</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- UX decisions -->
+    <div class="doc-card">
+      <h3><span class="dot"></span>Decisões de UX</h3>
+      <div class="doc-section">
+        <ul class="doc-list">
+          <li>Login centralizado vertical — foco total no form</li>
+          <li>Logo usa SVG campo de futebol estilizado (não emoji)</li>
+          <li>Wizard mostra etapa 3 (a mais complexa) como referência</li>
+          <li>Draft em grid 2col — cabe 4 cards por scroll na tela</li>
+          <li>Atributos em barras (não números) — mais visual e gamificado</li>
+          <li>Budget bar usa gradiente verde→amarelo — feedback instantâneo</li>
+          <li>Roster list scrollável com max-height — campo sempre visível</li>
+          <li>Botão "×" remove do elenco — sem confirmação (ação leve)</li>
+          <li>Wizard não tem "Pular" — todas as etapas são obrigatórias</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

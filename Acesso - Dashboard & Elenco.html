@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acesso — Dashboard & Elenco</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: #050505;
+  color: #FFFFFF;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ═══════════════════════════════
+   HEADER
+   ═══════════════════════════════ */
+.header {
+  text-align: center;
+  padding: 48px 24px 16px;
+}
+.header-logo {
+  font-size: 32px;
+  font-weight: 700;
+  color: #22C55E;
+  letter-spacing: -0.5px;
+  margin-bottom: 6px;
+}
+.header-sub {
+  font-size: 14px;
+  color: #52525B;
+  font-weight: 400;
+}
+
+/* ═══════════════════════════════
+   SCREENS GRID
+   ═══════════════════════════════ */
+.screens {
+  display: flex;
+  gap: 48px;
+  justify-content: center;
+  padding: 32px 24px 24px;
+  flex-wrap: wrap;
+}
+.screen-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.screen-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #A1A1AA;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* ═══════════════════════════════
+   PHONE FRAME
+   ═══════════════════════════════ */
+.phone {
+  width: 375px;
+  height: 812px;
+  border-radius: 44px;
+  border: 4px solid #1F1F1F;
+  overflow: hidden;
+  position: relative;
+  background: #0A0A0A;
+  box-shadow: 0 0 0 1px #111, 0 24px 80px rgba(0,0,0,0.6);
+}
+.phone-notch {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 30px;
+  background: #000;
+  border-radius: 0 0 18px 18px;
+  z-index: 20;
+}
+.phone-notch::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 10px;
+  background: #1a1a1a;
+  border-radius: 50%;
+}
+.phone iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: #0A0A0A;
+}
+
+/* ═══════════════════════════════
+   COMPONENT DOCS
+   ═══════════════════════════════ */
+.docs {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 16px 24px 64px;
+}
+.docs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+@media (max-width: 700px) {
+  .docs-grid { grid-template-columns: 1fr; }
+}
+.doc-card {
+  background: #111111;
+  border: 0.5px solid #1F1F1F;
+  border-radius: 10px;
+  padding: 20px;
+}
+.doc-card h3 {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.doc-card h3 .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22C55E;
+}
+.doc-section {
+  margin-bottom: 14px;
+}
+.doc-section:last-child { margin-bottom: 0; }
+.doc-section-title {
+  font-size: 10px;
+  font-weight: 600;
+  color: #52525B;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 6px;
+}
+.doc-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.doc-list li {
+  font-size: 12px;
+  color: #A1A1AA;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.doc-list li::before {
+  content: '';
+  width: 4px;
+  height: 4px;
+  border-radius: 1px;
+  background: #22C55E;
+  flex-shrink: 0;
+}
+.tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: rgba(34,197,94,0.1);
+  color: #22C55E;
+}
+
+/* ═══════════════════════════════
+   DESIGN SYSTEM STRIP
+   ═══════════════════════════════ */
+.ds-strip {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 24px 32px;
+}
+.ds-strip h2 {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #52525B;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.ds-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.ds-swatch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.ds-swatch-color {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  border: 0.5px solid #1F1F1F;
+}
+.ds-swatch-label {
+  font-size: 10px;
+  color: #52525B;
+  font-weight: 500;
+}
+.ds-type-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.ds-type-item {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+.ds-type-sample { color: #fff; }
+.ds-type-spec {
+  font-size: 10px;
+  color: #52525B;
+  white-space: nowrap;
+}
+.ds-pos-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.ds-pos-badge {
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-logo">⚽ Acesso</div>
+  <div class="header-sub">Design Handoff — Dashboard & Elenco</div>
+</div>
+
+<!-- PHONE FRAMES -->
+<div class="screens">
+  <div class="screen-col">
+    <span class="screen-label">03 — Dashboard</span>
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <iframe src="design_handoff/03-Dashboard.html" title="Dashboard"></iframe>
+    </div>
+  </div>
+  <div class="screen-col">
+    <span class="screen-label">04 — Elenco</span>
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <iframe src="design_handoff/04-Squad.html" title="Elenco"></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- DESIGN SYSTEM STRIP -->
+<div class="ds-strip">
+  <h2>Design System — Tokens</h2>
+
+  <div class="ds-row">
+    <div class="ds-swatch">
+      <div class="ds-swatch-color" style="background:#0A0A0A"></div>
+      <span class="ds-swatch-label">BG #0A0A0A</span>
+    </div>
+    <div class="ds-swatch">
+      <div class="ds-swatch-color" style="background:#111111"></div>
+      <span class="ds-swatch-label">Card #111</span>
+    </div>
+    <div class="ds-swatch">
+      <div class="ds-swatch-color" style="background:#1F1F1F"></div>
+      <span class="ds-swatch-label">Border #1F1F1F</span>
+    </div>
+    <div class="ds-swatch">
+      <div class="ds-swatch-color" style="background:#FFFFFF"></div>
+      <span class="ds-swatch-label">Text #FFF</span>
+    </div>
+    <div class="ds-swatch">
+      <div class="ds-swatch-color" style="background:#A1A1AA"></div>
+      <span class="ds-swatch-label">Text-2 #A1A1AA</span>
+    </div>
+    <div class="ds-swatch">
+      <div class="ds-swatch-color" style="background:#52525B"></div>
+      <span class="ds-swatch-label">Text-3 #52525B</span>
+    </div>
+    <div class="ds-swatch">
+      <div class="ds-swatch-color" style="background:#22C55E"></div>
+      <span class="ds-swatch-label">Accent #22C55E</span>
+    </div>
+    <div class="ds-swatch">
+      <div class="ds-swatch-color" style="background:#EF4444"></div>
+      <span class="ds-swatch-label">Danger #EF4444</span>
+    </div>
+    <div class="ds-swatch">
+      <div class="ds-swatch-color" style="background:#EAB308"></div>
+      <span class="ds-swatch-label">Warning #EAB308</span>
+    </div>
+  </div>
+
+  <div class="ds-type-row">
+    <div class="ds-type-item">
+      <span class="ds-type-sample" style="font-size:22px;font-weight:700">Heading XL</span>
+      <span class="ds-type-spec">Inter 700 · 22px</span>
+    </div>
+    <div class="ds-type-item">
+      <span class="ds-type-sample" style="font-size:18px;font-weight:700">Heading L</span>
+      <span class="ds-type-spec">Inter 700 · 18px</span>
+    </div>
+    <div class="ds-type-item">
+      <span class="ds-type-sample" style="font-size:14px;font-weight:600">Heading M</span>
+      <span class="ds-type-spec">Inter 600 · 14px</span>
+    </div>
+    <div class="ds-type-item">
+      <span class="ds-type-sample" style="font-size:13px;font-weight:400;color:#A1A1AA">Body</span>
+      <span class="ds-type-spec">Inter 400 · 13px</span>
+    </div>
+    <div class="ds-type-item">
+      <span class="ds-type-sample" style="font-size:11px;font-weight:500;color:#52525B">Caption</span>
+      <span class="ds-type-spec">Inter 500 · 11px</span>
+    </div>
+  </div>
+
+  <div class="ds-pos-row">
+    <span class="ds-pos-badge" style="background:#7C3AED">GOL</span>
+    <span class="ds-pos-badge" style="background:#1D4ED8">ZAG</span>
+    <span class="ds-pos-badge" style="background:#0369A1">LAT</span>
+    <span class="ds-pos-badge" style="background:#065F46">VOL</span>
+    <span class="ds-pos-badge" style="background:#854D0E">MEI</span>
+    <span class="ds-pos-badge" style="background:#9A3412">ATA</span>
+  </div>
+</div>
+
+<!-- COMPONENT DOCUMENTATION -->
+<div class="docs">
+  <div class="docs-grid">
+
+    <!-- Dashboard components -->
+    <div class="doc-card">
+      <h3><span class="dot"></span>Dashboard — Componentes</h3>
+      <div class="doc-section">
+        <div class="doc-section-title">Componentes</div>
+        <ul class="doc-list">
+          <li>ClubHeader <span class="tag">layout</span></li>
+          <li>StatCard <span class="tag">×3</span></li>
+          <li>MatchCard (VS layout)</li>
+          <li>ResultBadge <span class="tag">×5</span></li>
+          <li>AlertCard</li>
+          <li>BottomNav <span class="tag">shared</span></li>
+        </ul>
+      </div>
+      <div class="doc-section">
+        <div class="doc-section-title">Estados</div>
+        <ul class="doc-list">
+          <li>Com dados (exibido)</li>
+          <li>Carregando — skeleton em cada card</li>
+          <li>Sem próximo jogo — card "Sem jogos agendados ⚽"</li>
+          <li>Sem alertas — seção oculta</li>
+          <li>Erro — retry com toast "Ops, tenta de novo 🔄"</li>
+        </ul>
+      </div>
+      <div class="doc-section">
+        <div class="doc-section-title">Microcopy</div>
+        <ul class="doc-list">
+          <li>Saldo negativo → "No vermelho 🚨"</li>
+          <li>Moral &lt; 50% → "Vestiário pegando fogo 🔥"</li>
+          <li>5 vitórias seguidas → "Tá voando! 🚀"</li>
+          <li>Alerta contrato → "Renove antes do pré-contrato!"</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Squad components -->
+    <div class="doc-card">
+      <h3><span class="dot"></span>Elenco — Componentes</h3>
+      <div class="doc-section">
+        <div class="doc-section-title">Componentes</div>
+        <ul class="doc-list">
+          <li>PageHeader</li>
+          <li>FilterPills <span class="tag">scroll-x</span></li>
+          <li>PlayerCard <span class="tag">×n</span></li>
+          <li>PositionBadge <span class="tag">6 cores</span></li>
+          <li>MoralBar</li>
+          <li>StatusBadge (Lesionado/Suspenso)</li>
+          <li>BottomNav <span class="tag">shared</span></li>
+        </ul>
+      </div>
+      <div class="doc-section">
+        <div class="doc-section-title">Estados</div>
+        <ul class="doc-list">
+          <li>Com dados (exibido)</li>
+          <li>Filtro ativo — filtra lista por posição</li>
+          <li>Elenco vazio → "Bora contratar! 🏪"</li>
+          <li>Carregando — skeleton cards</li>
+          <li>Jogador tap → sheet com detalhes e ações</li>
+        </ul>
+      </div>
+      <div class="doc-section">
+        <div class="doc-section-title">Microcopy</div>
+        <ul class="doc-list">
+          <li>Rating ≥ 80 → "Craque! ⭐"</li>
+          <li>Moral &lt; 40% → "Insatisfeito 😤"</li>
+          <li>Lesionado → "🤕 Lesionado — X jogos"</li>
+          <li>Suspenso → "🟨 Suspenso — X jogo"</li>
+          <li>Fadiga &gt; 80% → "Precisa descansar 😴"</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Navigation flow -->
+    <div class="doc-card">
+      <h3><span class="dot"></span>Fluxo de Navegação</h3>
+      <div class="doc-section">
+        <ul class="doc-list">
+          <li>Dashboard → tap "Próximo jogo" → Pré-jogo</li>
+          <li>Dashboard → tap alerta → Detalhe do jogador</li>
+          <li>Dashboard → BottomNav → qualquer tela</li>
+          <li>Elenco → tap jogador → Sheet de detalhes</li>
+          <li>Elenco → filtro posição → lista filtrada</li>
+          <li>Elenco → tap "Escalar" → Pré-jogo</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- UX decisions -->
+    <div class="doc-card">
+      <h3><span class="dot"></span>Decisões de UX</h3>
+      <div class="doc-section">
+        <ul class="doc-list">
+          <li>Resultados usam V/E/D (pt-BR) — não W/D/L</li>
+          <li>Saldo abreviado (287,4k) nos cards compactos</li>
+          <li>Moral como barra visual + % numérico no tooltip</li>
+          <li>Fadiga invertida: 🔋 85% = 85% energia restante</li>
+          <li>Position badges sólidos (não outline) — legibilidade</li>
+          <li>Status badges no footer do card, não overlay</li>
+          <li>Bottom nav com 5 itens (padrão iOS/Android)</li>
+          <li>Escudo SVG shield — placeholder escalável</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

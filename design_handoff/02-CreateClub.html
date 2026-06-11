@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acesso — Criar Clube</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0A0A0A;
+  --bg-card: #111111;
+  --border: #1F1F1F;
+  --text: #FFFFFF;
+  --text-2: #A1A1AA;
+  --text-3: #52525B;
+  --accent: #22C55E;
+  --accent-dim: rgba(34,197,94,0.1);
+  --danger: #EF4444;
+  --warning: #EAB308;
+  --warning-dim: rgba(234,179,8,0.1);
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  max-width: 390px;
+  margin: 0 auto;
+  min-height: 100dvh;
+  padding: 16px 16px 24px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ═══════════════════════════════
+   COMPONENT: StepProgress
+   ═══════════════════════════════ */
+.step-bar {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 24px;
+  padding: 0 8px;
+}
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  flex: 1;
+  position: relative;
+}
+.step-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  border: 1.5px solid var(--border);
+  background: var(--bg);
+  color: var(--text-3);
+  position: relative;
+  z-index: 2;
+}
+.step-name {
+  font-size: 10px;
+  color: var(--text-3);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.step.done .step-dot {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg);
+}
+.step.done .step-name { color: var(--accent); }
+.step.active .step-dot {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-dim);
+}
+.step.active .step-name { color: var(--text); font-weight: 600; }
+.step-line {
+  flex: 0.6;
+  height: 1.5px;
+  background: var(--border);
+  margin-bottom: 18px;
+}
+.step-line.done { background: var(--accent); }
+
+/* ═══════════════════════════════
+   Page title
+   ═══════════════════════════════ */
+.page-title {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 16px;
+}
+
+/* ═══════════════════════════════
+   COMPONENT: BudgetBar
+   ═══════════════════════════════ */
+.budget-card {
+  background: var(--bg-card);
+  border: 0.5px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+}
+.budget-label {
+  font-size: 12px;
+  color: var(--text-2);
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+}
+.budget-val { font-weight: 600; color: var(--text); }
+.budget-track {
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.budget-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.3s;
+}
+
+/* ═══════════════════════════════
+   Section header
+   ═══════════════════════════════ */
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.section-title {
+  font-size: 14px;
+  font-weight: 600;
+}
+.section-count {
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+/* ═══════════════════════════════
+   COMPONENT: DraftPlayerCard
+   ═══════════════════════════════ */
+.pool-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.draft-card {
+  background: var(--bg-card);
+  border: 0.5px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  position: relative;
+}
+.draft-top {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+.draft-name {
+  font-size: 12px;
+  font-weight: 600;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.draft-age {
+  font-size: 11px;
+  color: var(--text-3);
+}
+.pos-badge {
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-size: 9px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.3px;
+}
+.pos-gol { background: #7C3AED; }
+.pos-zag { background: #1D4ED8; }
+.pos-lat { background: #0369A1; }
+.pos-vol { background: #065F46; }
+.pos-mei { background: #854D0E; }
+.pos-ata { background: #9A3412; }
+
+/* Attribute bars */
+.attrs {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+.attr-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.attr-label {
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--text-3);
+  width: 22px;
+  flex-shrink: 0;
+}
+.attr-track {
+  flex: 1;
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.attr-fill {
+  height: 100%;
+  border-radius: 2px;
+}
+.attr-fill.high { background: var(--accent); }
+.attr-fill.mid { background: var(--warning); }
+.attr-fill.low { background: var(--danger); }
+.attr-val {
+  font-size: 9px;
+  color: var(--text-2);
+  width: 16px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.draft-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.draft-salary {
+  font-size: 10px;
+  color: var(--text-3);
+}
+.btn-add {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 0.5px solid var(--accent);
+  background: var(--accent-dim);
+  color: var(--accent);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+}
+
+/* ═══════════════════════════════
+   COMPONENT: SelectedRoster
+   ═══════════════════════════════ */
+.roster-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 280px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.roster-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  background: var(--bg-card);
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+}
+.roster-name {
+  font-size: 12px;
+  font-weight: 500;
+  flex: 1;
+}
+.roster-salary {
+  font-size: 11px;
+  color: var(--text-3);
+}
+.roster-remove {
+  background: none;
+  border: none;
+  color: var(--text-3);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0 4px;
+  font-family: inherit;
+}
+
+/* ═══════════════════════════════
+   Continue button
+   ═══════════════════════════════ */
+.btn-continue {
+  background: var(--accent);
+  color: var(--bg);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  padding: 14px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 20px;
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════
+     COMPONENTE: StepProgress
+     Barra de progresso do wizard (4 etapas)
+     Props: currentStep, steps[]
+     ══════════════════════════════════ -->
+<div class="step-bar">
+  <div class="step done">
+    <div class="step-dot">✓</div>
+    <div class="step-name">Identidade</div>
+  </div>
+  <div class="step-line done"></div>
+  <div class="step done">
+    <div class="step-dot">✓</div>
+    <div class="step-name">Financeiro</div>
+  </div>
+  <div class="step-line done"></div>
+  <div class="step active">
+    <div class="step-dot">3</div>
+    <div class="step-name">Draft</div>
+  </div>
+  <div class="step-line"></div>
+  <div class="step">
+    <div class="step-dot">4</div>
+    <div class="step-name">Formação</div>
+  </div>
+</div>
+
+<h1 class="page-title">Monte seu time dos sonhos<br>(com o orçamento que você tem 😅)</h1>
+
+<!-- ══════════════════════════════════
+     COMPONENTE: BudgetBar
+     Barra de orçamento de folha salarial
+     Props: used, total
+     ══════════════════════════════════ -->
+<div class="budget-card">
+  <div class="budget-label">
+    <span>Folha mensal</span>
+    <span class="budget-val">R$ 42.000 / R$ 60.000</span>
+  </div>
+  <div class="budget-track">
+    <div class="budget-fill" style="width: 70%; background: linear-gradient(90deg, #22C55E 0%, #EAB308 100%)"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     COMPONENTE: DraftPlayerCard (×8)
+     Card de jogador no pool do draft
+     Props: name, position, age, attrs{}, salary
+     ══════════════════════════════════ -->
+<div class="section-head">
+  <div class="section-title">Jogadores disponíveis</div>
+  <div class="section-count">🇧🇷 Pool</div>
+</div>
+
+<div class="pool-grid">
+  <!-- Player 1 -->
+  <div class="draft-card">
+    <div class="draft-top">
+      <span class="pos-badge pos-ata">ATA</span>
+      <span class="draft-name">Diego Santos</span>
+      <span class="draft-age">24</span>
+    </div>
+    <div class="attrs">
+      <div class="attr-row"><span class="attr-label">RIT</span><div class="attr-track"><div class="attr-fill high" style="width:72%"></div></div><span class="attr-val">72</span></div>
+      <div class="attr-row"><span class="attr-label">FIN</span><div class="attr-track"><div class="attr-fill mid" style="width:68%"></div></div><span class="attr-val">68</span></div>
+      <div class="attr-row"><span class="attr-label">PAS</span><div class="attr-track"><div class="attr-fill mid" style="width:55%"></div></div><span class="attr-val">55</span></div>
+      <div class="attr-row"><span class="attr-label">DRI</span><div class="attr-track"><div class="attr-fill high" style="width:70%"></div></div><span class="attr-val">70</span></div>
+      <div class="attr-row"><span class="attr-label">DEF</span><div class="attr-track"><div class="attr-fill low" style="width:32%"></div></div><span class="attr-val">32</span></div>
+    </div>
+    <div class="draft-footer">
+      <span class="draft-salary">R$ 4.200/mês</span>
+      <button class="btn-add">+</button>
+    </div>
+  </div>
+
+  <!-- Player 2 -->
+  <div class="draft-card">
+    <div class="draft-top">
+      <span class="pos-badge pos-mei">MEI</span>
+      <span class="draft-name">Thiago Lima</span>
+      <span class="draft-age">22</span>
+    </div>
+    <div class="attrs">
+      <div class="attr-row"><span class="attr-label">RIT</span><div class="attr-track"><div class="attr-fill mid" style="width:58%"></div></div><span class="attr-val">58</span></div>
+      <div class="attr-row"><span class="attr-label">FIN</span><div class="attr-track"><div class="attr-fill mid" style="width:52%"></div></div><span class="attr-val">52</span></div>
+      <div class="attr-row"><span class="attr-label">PAS</span><div class="attr-track"><div class="attr-fill high" style="width:71%"></div></div><span class="attr-val">71</span></div>
+      <div class="attr-row"><span class="attr-label">DRI</span><div class="attr-track"><div class="attr-fill mid" style="width:65%"></div></div><span class="attr-val">65</span></div>
+      <div class="attr-row"><span class="attr-label">DEF</span><div class="attr-track"><div class="attr-fill mid" style="width:48%"></div></div><span class="attr-val">48</span></div>
+    </div>
+    <div class="draft-footer">
+      <span class="draft-salary">R$ 3.100/mês</span>
+      <button class="btn-add">+</button>
+    </div>
+  </div>
+
+  <!-- Player 3 -->
+  <div class="draft-card">
+    <div class="draft-top">
+      <span class="pos-badge pos-zag">ZAG</span>
+      <span class="draft-name">André Oliveira</span>
+      <span class="draft-age">28</span>
+    </div>
+    <div class="attrs">
+      <div class="attr-row"><span class="attr-label">RIT</span><div class="attr-track"><div class="attr-fill mid" style="width:55%"></div></div><span class="attr-val">55</span></div>
+      <div class="attr-row"><span class="attr-label">FIN</span><div class="attr-track"><div class="attr-fill low" style="width:30%"></div></div><span class="attr-val">30</span></div>
+      <div class="attr-row"><span class="attr-label">PAS</span><div class="attr-track"><div class="attr-fill mid" style="width:48%"></div></div><span class="attr-val">48</span></div>
+      <div class="attr-row"><span class="attr-label">DRI</span><div class="attr-track"><div class="attr-fill low" style="width:35%"></div></div><span class="attr-val">35</span></div>
+      <div class="attr-row"><span class="attr-label">DEF</span><div class="attr-track"><div class="attr-fill high" style="width:74%"></div></div><span class="attr-val">74</span></div>
+    </div>
+    <div class="draft-footer">
+      <span class="draft-salary">R$ 3.800/mês</span>
+      <button class="btn-add">+</button>
+    </div>
+  </div>
+
+  <!-- Player 4 -->
+  <div class="draft-card">
+    <div class="draft-top">
+      <span class="pos-badge pos-gol">GOL</span>
+      <span class="draft-name">Felipe Nunes</span>
+      <span class="draft-age">26</span>
+    </div>
+    <div class="attrs">
+      <div class="attr-row"><span class="attr-label">RIT</span><div class="attr-track"><div class="attr-fill low" style="width:42%"></div></div><span class="attr-val">42</span></div>
+      <div class="attr-row"><span class="attr-label">FIN</span><div class="attr-track"><div class="attr-fill low" style="width:15%"></div></div><span class="attr-val">15</span></div>
+      <div class="attr-row"><span class="attr-label">PAS</span><div class="attr-track"><div class="attr-fill mid" style="width:45%"></div></div><span class="attr-val">45</span></div>
+      <div class="attr-row"><span class="attr-label">DRI</span><div class="attr-track"><div class="attr-fill low" style="width:20%"></div></div><span class="attr-val">20</span></div>
+      <div class="attr-row"><span class="attr-label">DEF</span><div class="attr-track"><div class="attr-fill high" style="width:70%"></div></div><span class="attr-val">70</span></div>
+    </div>
+    <div class="draft-footer">
+      <span class="draft-salary">R$ 3.500/mês</span>
+      <button class="btn-add">+</button>
+    </div>
+  </div>
+
+  <!-- Player 5 -->
+  <div class="draft-card">
+    <div class="draft-top">
+      <span class="pos-badge pos-vol">VOL</span>
+      <span class="draft-name">Matheus Costa</span>
+      <span class="draft-age">25</span>
+    </div>
+    <div class="attrs">
+      <div class="attr-row"><span class="attr-label">RIT</span><div class="attr-track"><div class="attr-fill mid" style="width:62%"></div></div><span class="attr-val">62</span></div>
+      <div class="attr-row"><span class="attr-label">FIN</span><div class="attr-track"><div class="attr-fill low" style="width:38%"></div></div><span class="attr-val">38</span></div>
+      <div class="attr-row"><span class="attr-label">PAS</span><div class="attr-track"><div class="attr-fill mid" style="width:65%"></div></div><span class="attr-val">65</span></div>
+      <div class="attr-row"><span class="attr-label">DRI</span><div class="attr-track"><div class="attr-fill mid" style="width:52%"></div></div><span class="attr-val">52</span></div>
+      <div class="attr-row"><span class="attr-label">DEF</span><div class="attr-track"><div class="attr-fill high" style="width:72%"></div></div><span class="attr-val">72</span></div>
+    </div>
+    <div class="draft-footer">
+      <span class="draft-salary">R$ 3.600/mês</span>
+      <button class="btn-add">+</button>
+    </div>
+  </div>
+
+  <!-- Player 6 -->
+  <div class="draft-card">
+    <div class="draft-top">
+      <span class="pos-badge pos-lat">LAT</span>
+      <span class="draft-name">Rodrigo Alves</span>
+      <span class="draft-age">23</span>
+    </div>
+    <div class="attrs">
+      <div class="attr-row"><span class="attr-label">RIT</span><div class="attr-track"><div class="attr-fill high" style="width:75%"></div></div><span class="attr-val">75</span></div>
+      <div class="attr-row"><span class="attr-label">FIN</span><div class="attr-track"><div class="attr-fill low" style="width:35%"></div></div><span class="attr-val">35</span></div>
+      <div class="attr-row"><span class="attr-label">PAS</span><div class="attr-track"><div class="attr-fill mid" style="width:58%"></div></div><span class="attr-val">58</span></div>
+      <div class="attr-row"><span class="attr-label">DRI</span><div class="attr-track"><div class="attr-fill mid" style="width:62%"></div></div><span class="attr-val">62</span></div>
+      <div class="attr-row"><span class="attr-label">DEF</span><div class="attr-track"><div class="attr-fill mid" style="width:60%"></div></div><span class="attr-val">60</span></div>
+    </div>
+    <div class="draft-footer">
+      <span class="draft-salary">R$ 2.800/mês</span>
+      <button class="btn-add">+</button>
+    </div>
+  </div>
+
+  <!-- Player 7 -->
+  <div class="draft-card">
+    <div class="draft-top">
+      <span class="pos-badge pos-ata">ATA</span>
+      <span class="draft-name">Gabriel Martins</span>
+      <span class="draft-age">20</span>
+    </div>
+    <div class="attrs">
+      <div class="attr-row"><span class="attr-label">RIT</span><div class="attr-track"><div class="attr-fill high" style="width:78%"></div></div><span class="attr-val">78</span></div>
+      <div class="attr-row"><span class="attr-label">FIN</span><div class="attr-track"><div class="attr-fill mid" style="width:65%"></div></div><span class="attr-val">65</span></div>
+      <div class="attr-row"><span class="attr-label">PAS</span><div class="attr-track"><div class="attr-fill low" style="width:42%"></div></div><span class="attr-val">42</span></div>
+      <div class="attr-row"><span class="attr-label">DRI</span><div class="attr-track"><div class="attr-fill high" style="width:72%"></div></div><span class="attr-val">72</span></div>
+      <div class="attr-row"><span class="attr-label">DEF</span><div class="attr-track"><div class="attr-fill low" style="width:25%"></div></div><span class="attr-val">25</span></div>
+    </div>
+    <div class="draft-footer">
+      <span class="draft-salary">R$ 2.500/mês</span>
+      <button class="btn-add">+</button>
+    </div>
+  </div>
+
+  <!-- Player 8 -->
+  <div class="draft-card">
+    <div class="draft-top">
+      <span class="pos-badge pos-mei">MEI</span>
+      <span class="draft-name">Leandro Silva</span>
+      <span class="draft-age">27</span>
+    </div>
+    <div class="attrs">
+      <div class="attr-row"><span class="attr-label">RIT</span><div class="attr-track"><div class="attr-fill mid" style="width:60%"></div></div><span class="attr-val">60</span></div>
+      <div class="attr-row"><span class="attr-label">FIN</span><div class="attr-track"><div class="attr-fill mid" style="width:55%"></div></div><span class="attr-val">55</span></div>
+      <div class="attr-row"><span class="attr-label">PAS</span><div class="attr-track"><div class="attr-fill high" style="width:70%"></div></div><span class="attr-val">70</span></div>
+      <div class="attr-row"><span class="attr-label">DRI</span><div class="attr-track"><div class="attr-fill mid" style="width:68%"></div></div><span class="attr-val">68</span></div>
+      <div class="attr-row"><span class="attr-label">DEF</span><div class="attr-track"><div class="attr-fill mid" style="width:45%"></div></div><span class="attr-val">45</span></div>
+    </div>
+    <div class="draft-footer">
+      <span class="draft-salary">R$ 4.000/mês</span>
+      <button class="btn-add">+</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     COMPONENTE: SelectedRoster
+     Lista compacta dos jogadores já selecionados
+     Props: players[], maxPlayers
+     ══════════════════════════════════ -->
+<div class="section-head">
+  <div class="section-title">Meu elenco</div>
+  <div class="section-count">14/22 jogadores</div>
+</div>
+
+<div class="roster-list">
+  <div class="roster-item"><span class="pos-badge pos-gol">GOL</span><span class="roster-name">Marcos Vieira</span><span class="roster-salary">R$ 3.8k</span><button class="roster-remove">×</button></div>
+  <div class="roster-item"><span class="pos-badge pos-gol">GOL</span><span class="roster-name">Ricardo Santos</span><span class="roster-salary">R$ 2.2k</span><button class="roster-remove">×</button></div>
+  <div class="roster-item"><span class="pos-badge pos-zag">ZAG</span><span class="roster-name">Bruno Almeida</span><span class="roster-salary">R$ 3.2k</span><button class="roster-remove">×</button></div>
+  <div class="roster-item"><span class="pos-badge pos-zag">ZAG</span><span class="roster-name">Henrique Dias</span><span class="roster-salary">R$ 2.8k</span><button class="roster-remove">×</button></div>
+  <div class="roster-item"><span class="pos-badge pos-lat">LAT</span><span class="roster-name">Caio Ribeiro</span><span class="roster-salary">R$ 2.9k</span><button class="roster-remove">×</button></div>
+  <div class="roster-item"><span class="pos-badge pos-lat">LAT</span><span class="roster-name">Paulo Moreira</span><span class="roster-salary">R$ 2.0k</span><button class="roster-remove">×</button></div>
+  <div class="roster-item"><span class="pos-badge pos-vol">VOL</span><span class="roster-name">Lucas Ferreira</span><span class="roster-salary">R$ 4.5k</span><button class="roster-remove">×</button></div>
+  <div class="roster-item"><span class="pos-badge pos-vol">VOL</span><span class="roster-name">Daniel Ramos</span><span class="roster-salary">R$ 2.4k</span><button class="roster-remove">×</button></div>
+  <div class="roster-item"><span class="pos-badge pos-mei">MEI</span><span class="roster-name">Carlos Henrique</span><span class="roster-salary">R$ 5.2k</span><button class="roster-remove">×</button></div>
+  <div class="roster-item"><span class="pos-badge pos-mei">MEI</span><span class="roster-name">Pedro Augusto</span><span class="roster-salary">R$ 3.1k</span><button class="roster-remove">×</button></div>
+  <div class="roster-item"><span class="pos-badge pos-ata">ATA</span><span class="roster-name">Marcus Vinícius</span><span class="roster-salary">R$ 4.8k</span><button class="roster-remove">×</button></div>
+  <div class="roster-item"><span class="pos-badge pos-ata">ATA</span><span class="roster-name">João Melo</span><span class="roster-salary">R$ 2.1k</span><button class="roster-remove">×</button></div>
+  <div class="roster-item"><span class="pos-badge pos-zag">ZAG</span><span class="roster-name">Rafael Costa</span><span class="roster-salary">R$ 2.6k</span><button class="roster-remove">×</button></div>
+  <div class="roster-item"><span class="pos-badge pos-mei">MEI</span><span class="roster-name">Eduardo Pires</span><span class="roster-salary">R$ 2.5k</span><button class="roster-remove">×</button></div>
+</div>
+
+<button class="btn-continue">Próximo: Formação →</button>
+
+</body>
+</html>

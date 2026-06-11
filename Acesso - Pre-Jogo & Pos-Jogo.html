@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acesso — Pré-Jogo & Pós-Jogo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: #050505;
+  color: #FFFFFF;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+.header { text-align: center; padding: 48px 24px 16px; }
+.header-logo { font-size: 32px; font-weight: 700; color: #22C55E; letter-spacing: -0.5px; margin-bottom: 6px; }
+.header-sub { font-size: 14px; color: #52525B; font-weight: 400; }
+
+.screens {
+  display: flex; gap: 48px; justify-content: center;
+  padding: 32px 24px 48px; flex-wrap: wrap;
+}
+.screen-col { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+.screen-label { font-size: 13px; font-weight: 600; color: #A1A1AA; letter-spacing: 0.5px; text-transform: uppercase; }
+
+.phone {
+  width: 375px; height: 812px; border-radius: 44px;
+  border: 4px solid #1F1F1F; overflow: hidden; position: relative;
+  background: #0A0A0A; box-shadow: 0 0 0 1px #111, 0 24px 80px rgba(0,0,0,0.6);
+}
+.phone-notch {
+  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 120px; height: 30px; background: #000; border-radius: 0 0 18px 18px; z-index: 20;
+}
+.phone-notch::before {
+  content: ''; position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+  width: 10px; height: 10px; background: #1a1a1a; border-radius: 50%;
+}
+.phone iframe { width: 100%; height: 100%; border: none; background: #0A0A0A; }
+
+/* ═══════════════════════════════
+   MATCH FLOW DIAGRAM
+   ═══════════════════════════════ */
+.flow-section { max-width: 900px; margin: 0 auto; padding: 0 24px 40px; }
+.flow-title { font-size: 14px; font-weight: 700; color: #52525B; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; }
+.flow-bar {
+  display: flex; align-items: center; gap: 0;
+  background: #111111; border: 0.5px solid #1F1F1F; border-radius: 10px;
+  overflow: hidden;
+}
+.flow-node {
+  flex: 1; padding: 16px; text-align: center; position: relative;
+}
+.flow-node + .flow-node { border-left: 0.5px solid #1F1F1F; }
+.flow-node.active { background: rgba(34,197,94,0.04); }
+.flow-node-icon { font-size: 20px; margin-bottom: 6px; }
+.flow-node-name { font-size: 12px; font-weight: 600; margin-bottom: 2px; }
+.flow-node-desc { font-size: 10px; color: #52525B; }
+.flow-node.active .flow-node-name { color: #22C55E; }
+.flow-arrow-inline {
+  position: absolute; right: -8px; top: 50%; transform: translateY(-50%);
+  color: #1F1F1F; font-size: 14px; z-index: 2;
+}
+
+/* ═══════════════════════════════
+   DOCS
+   ═══════════════════════════════ */
+.docs { max-width: 900px; margin: 0 auto; padding: 0 24px 64px; }
+.docs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+@media (max-width: 700px) { .docs-grid { grid-template-columns: 1fr; } .flow-bar { flex-direction: column; } .flow-node + .flow-node { border-left: none; border-top: 0.5px solid #1F1F1F; } }
+.doc-card { background: #111111; border: 0.5px solid #1F1F1F; border-radius: 10px; padding: 20px; }
+.doc-card h3 { font-size: 14px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.doc-card h3 .dot { width: 8px; height: 8px; border-radius: 50%; background: #22C55E; }
+.doc-section { margin-bottom: 14px; }
+.doc-section:last-child { margin-bottom: 0; }
+.doc-section-title { font-size: 10px; font-weight: 600; color: #52525B; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px; }
+.doc-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+.doc-list li { font-size: 12px; color: #A1A1AA; display: flex; align-items: center; gap: 6px; }
+.doc-list li::before { content: ''; width: 4px; height: 4px; border-radius: 1px; background: #22C55E; flex-shrink: 0; }
+.tag { display: inline-block; font-size: 10px; font-weight: 600; padding: 1px 5px; border-radius: 3px; background: rgba(34,197,94,0.1); color: #22C55E; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">⚽ Acesso</div>
+  <div class="header-sub">Design Handoff — Pré-Jogo & Pós-Jogo</div>
+</div>
+
+<div class="screens">
+  <div class="screen-col">
+    <span class="screen-label">05 — Pré-Jogo</span>
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <iframe src="design_handoff/05-PreMatch.html" title="Pré-Jogo"></iframe>
+    </div>
+  </div>
+  <div class="screen-col">
+    <span class="screen-label">06 — Pós-Jogo</span>
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <iframe src="design_handoff/06-PostMatch.html" title="Pós-Jogo"></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- MATCH FLOW -->
+<div class="flow-section">
+  <div class="flow-title">⚽ Fluxo de Jogo — Ciclo por Rodada</div>
+  <div class="flow-bar">
+    <div class="flow-node">
+      <div class="flow-node-icon">📋</div>
+      <div class="flow-node-name">Dashboard</div>
+      <div class="flow-node-desc">Ver próximo jogo</div>
+    </div>
+    <div class="flow-node active">
+      <div class="flow-node-icon">🏟️</div>
+      <div class="flow-node-name">Pré-Jogo</div>
+      <div class="flow-node-desc">Escalar + tática</div>
+    </div>
+    <div class="flow-node">
+      <div class="flow-node-icon">⚡</div>
+      <div class="flow-node-name">Simulação</div>
+      <div class="flow-node-desc">Motor de partida</div>
+    </div>
+    <div class="flow-node active">
+      <div class="flow-node-icon">📊</div>
+      <div class="flow-node-name">Pós-Jogo</div>
+      <div class="flow-node-desc">Resultado + impacto</div>
+    </div>
+    <div class="flow-node">
+      <div class="flow-node-icon">🔄</div>
+      <div class="flow-node-name">Próxima Rodada</div>
+      <div class="flow-node-desc">Volta ao Dashboard</div>
+    </div>
+  </div>
+</div>
+
+<!-- DOCS -->
+<div class="docs">
+  <div class="docs-grid">
+
+    <div class="doc-card">
+      <h3><span class="dot"></span>Pré-Jogo — Componentes</h3>
+      <div class="doc-section">
+        <div class="doc-section-title">Componentes</div>
+        <ul class="doc-list">
+          <li>MatchHeader (competição + rodada)</li>
+          <li>OpponentCard (escudo, nome, força, resultados)</li>
+          <li>PitchField <span class="tag">SVG</span></li>
+          <li>PlayerCircle <span class="tag">×11</span></li>
+          <li>FormationSelector <span class="tag">dropdown</span></li>
+          <li>StylePills (Pressão / Posse / Contra)</li>
+          <li>RiskPills (🛡️ / ⚖️ / 🔥)</li>
+          <li>PrimaryButton <span class="tag">shared</span></li>
+          <li>BottomNav <span class="tag">shared</span></li>
+        </ul>
+      </div>
+      <div class="doc-section">
+        <div class="doc-section-title">Estados</div>
+        <ul class="doc-list">
+          <li>Escalação completa (exibido)</li>
+          <li>Posição vazia → círculo cinza tracejado</li>
+          <li>Jogador lesionado selecionado → alerta "🤕 Lesionado!"</li>
+          <li>Jogador suspenso → bloqueado com overlay</li>
+          <li>Simulando → loading fullscreen com animação de bola</li>
+        </ul>
+      </div>
+      <div class="doc-section">
+        <div class="doc-section-title">Microcopy</div>
+        <ul class="doc-list">
+          <li>Força adversário → "Perigoso ⚠️" / "Equilibrado ⚖️" / "Mais fraco 💪"</li>
+          <li>Estilo Pressão → "⚡ Pressão alta no campo deles"</li>
+          <li>Estilo Posse → "🎯 Controle e paciência"</li>
+          <li>Estilo Contra → "🏃 Velocidade na transição"</li>
+          <li>CTA → "Simular jogo 🟢"</li>
+          <li>Risco baixo → "🛡️ Seguro"</li>
+          <li>Risco alto → "🔥 All-in"</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="doc-card">
+      <h3><span class="dot"></span>Pós-Jogo — Componentes</h3>
+      <div class="doc-section">
+        <div class="doc-section-title">Componentes</div>
+        <ul class="doc-list">
+          <li>Scoreboard (placar grande + resultado tag)</li>
+          <li>EventTimeline <span class="tag">vertical</span></li>
+          <li>TimelineEvent (gol / cartão / substituição)</li>
+          <li>RatingCard <span class="tag">grid 2col</span></li>
+          <li>ImpactCard (moral + lesões)</li>
+          <li>InjuryAlert</li>
+          <li>PrimaryButton <span class="tag">shared</span></li>
+          <li>BottomNav <span class="tag">shared</span></li>
+        </ul>
+      </div>
+      <div class="doc-section">
+        <div class="doc-section-title">Estados</div>
+        <ul class="doc-list">
+          <li>Vitória (exibido) — badge verde "VITÓRIA 🏆"</li>
+          <li>Empate → badge cinza "EMPATE 🤝"</li>
+          <li>Derrota → badge vermelho "DERROTA 😤"</li>
+          <li>Sem eventos (0×0 sem cartões) → "Jogo morno 😴"</li>
+          <li>Goleada (4+ gols) → "Passeio! 🎉"</li>
+        </ul>
+      </div>
+      <div class="doc-section">
+        <div class="doc-section-title">Microcopy</div>
+        <ul class="doc-list">
+          <li>Rating ≥ 8.0 → verde "Craque do jogo ⭐"</li>
+          <li>Rating ≤ 5.0 → vermelho "Dia pra esquecer"</li>
+          <li>Moral +8 → "😄 Vestiário feliz"</li>
+          <li>Moral -10 → "😡 Clima pesado"</li>
+          <li>Lesão → "🤕 Lesão leve (X jogos)"</li>
+          <li>CTA → "Próxima rodada →"</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="doc-card">
+      <h3><span class="dot"></span>Campo SVG — Especificação</h3>
+      <div class="doc-section">
+        <div class="doc-section-title">Dimensões</div>
+        <ul class="doc-list">
+          <li>ViewBox: 320×440 (retrato, visão de cima)</li>
+          <li>Fundo: #064E3B (verde escuro)</li>
+          <li>Linhas: #0D7B58 (verde médio), 1.5px</li>
+          <li>Marcações: centro, áreas, meia-lua, escanteios</li>
+        </ul>
+      </div>
+      <div class="doc-section">
+        <div class="doc-section-title">Player Circles</div>
+        <ul class="doc-list">
+          <li>Raio: 22px</li>
+          <li>Fill: #22C55E (titular) / #52525B (vazio)</li>
+          <li>Texto: número da camisa + 3 letras do nome</li>
+          <li>Font: Inter 700 11px (número) + 600 8px (nome)</li>
+          <li>Interação: tap para trocar jogador (bottom sheet)</li>
+        </ul>
+      </div>
+      <div class="doc-section">
+        <div class="doc-section-title">Formações suportadas</div>
+        <ul class="doc-list">
+          <li>4-3-3 (exibida) — posições pré-calculadas</li>
+          <li>4-4-2 / 3-5-2 / 4-2-3-1 / 5-3-2</li>
+          <li>Cada formação = array de {x, y} para 10 jogadores + GK fixo</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="doc-card">
+      <h3><span class="dot"></span>Decisões de UX</h3>
+      <div class="doc-section">
+        <ul class="doc-list">
+          <li>Campo em retrato (não paisagem) — melhor uso do espaço mobile</li>
+          <li>Ataque no topo do campo — convenção de jogos de futebol</li>
+          <li>Força do adversário sem número — evita min-maxing, mais imersivo</li>
+          <li>Últimos 3 resultados do adversário — info suficiente sem overload</li>
+          <li>Timeline vertical com dot colors — scan rápido dos eventos</li>
+          <li>Ratings em grid 2col — cabe todo o time sem scroll excessivo</li>
+          <li>Cores de rating: ≥7.0 verde, 5.5–6.9 amarelo, ≤5.4 vermelho</li>
+          <li>Impacto no elenco logo após ratings — causa e efeito claros</li>
+          <li>Botão "Próxima rodada" fecha o ciclo → Dashboard</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

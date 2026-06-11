@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acesso — Transferências & Finanças</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: #050505;
+  color: #FFFFFF;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+.header { text-align: center; padding: 48px 24px 16px; }
+.header-logo { font-size: 32px; font-weight: 700; color: #22C55E; letter-spacing: -0.5px; margin-bottom: 6px; }
+.header-sub { font-size: 14px; color: #52525B; font-weight: 400; }
+
+.screens {
+  display: flex; gap: 48px; justify-content: center;
+  padding: 32px 24px 48px; flex-wrap: wrap;
+}
+.screen-col { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+.screen-label { font-size: 13px; font-weight: 600; color: #A1A1AA; letter-spacing: 0.5px; text-transform: uppercase; }
+
+.phone {
+  width: 375px; height: 812px; border-radius: 44px;
+  border: 4px solid #1F1F1F; overflow: hidden; position: relative;
+  background: #0A0A0A; box-shadow: 0 0 0 1px #111, 0 24px 80px rgba(0,0,0,0.6);
+}
+.phone-notch {
+  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 120px; height: 30px; background: #000; border-radius: 0 0 18px 18px; z-index: 20;
+}
+.phone-notch::before {
+  content: ''; position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+  width: 10px; height: 10px; background: #1a1a1a; border-radius: 50%;
+}
+.phone iframe { width: 100%; height: 100%; border: none; background: #0A0A0A; }
+
+/* ═══════════════════════════════
+   DATA MODEL DIAGRAM
+   ═══════════════════════════════ */
+.model-section { max-width: 900px; margin: 0 auto; padding: 0 24px 40px; }
+.model-title { font-size: 14px; font-weight: 700; color: #52525B; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; }
+.model-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;
+}
+@media (max-width: 700px) { .model-grid { grid-template-columns: 1fr; } }
+.model-card {
+  background: #111111; border: 0.5px solid #1F1F1F; border-radius: 10px; padding: 16px;
+}
+.model-card-title {
+  font-size: 12px; font-weight: 700; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 6px;
+}
+.model-card-title .mc-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+}
+.model-fields {
+  display: flex; flex-direction: column; gap: 3px;
+}
+.model-field {
+  font-size: 10px; color: #52525B; font-family: 'Inter', monospace;
+  display: flex; justify-content: space-between;
+}
+.model-field .mf-type { color: #22C55E; font-weight: 500; }
+
+/* ═══════════════════════════════
+   DOCS
+   ═══════════════════════════════ */
+.docs { max-width: 900px; margin: 0 auto; padding: 0 24px 64px; }
+.docs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+@media (max-width: 700px) { .docs-grid { grid-template-columns: 1fr; } }
+.doc-card { background: #111111; border: 0.5px solid #1F1F1F; border-radius: 10px; padding: 20px; }
+.doc-card h3 { font-size: 14px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.doc-card h3 .dot { width: 8px; height: 8px; border-radius: 50%; background: #22C55E; }
+.doc-section { margin-bottom: 14px; }
+.doc-section:last-child { margin-bottom: 0; }
+.doc-section-title { font-size: 10px; font-weight: 600; color: #52525B; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px; }
+.doc-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+.doc-list li { font-size: 12px; color: #A1A1AA; display: flex; align-items: center; gap: 6px; }
+.doc-list li::before { content: ''; width: 4px; height: 4px; border-radius: 1px; background: #22C55E; flex-shrink: 0; }
+.tag { display: inline-block; font-size: 10px; font-weight: 600; padding: 1px 5px; border-radius: 3px; background: rgba(34,197,94,0.1); color: #22C55E; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">⚽ Acesso</div>
+  <div class="header-sub">Design Handoff — Transferências & Finanças</div>
+</div>
+
+<div class="screens">
+  <div class="screen-col">
+    <span class="screen-label">07 — Transferências</span>
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <iframe src="design_handoff/07-Transfers.html" title="Transferências"></iframe>
+    </div>
+  </div>
+  <div class="screen-col">
+    <span class="screen-label">08 — Finanças</span>
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <iframe src="design_handoff/08-Finances.html" title="Finanças"></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- DATA MODEL -->
+<div class="model-section">
+  <div class="model-title">🗄️ Modelo de Dados — Tabelas Supabase (relevantes)</div>
+  <div class="model-grid">
+    <div class="model-card">
+      <div class="model-card-title"><span class="mc-dot" style="background:#22C55E"></span>transfers</div>
+      <div class="model-fields">
+        <div class="model-field"><span>id</span><span class="mf-type">uuid</span></div>
+        <div class="model-field"><span>player_id</span><span class="mf-type">uuid FK</span></div>
+        <div class="model-field"><span>from_club_id</span><span class="mf-type">uuid FK</span></div>
+        <div class="model-field"><span>to_club_id</span><span class="mf-type">uuid FK</span></div>
+        <div class="model-field"><span>fee</span><span class="mf-type">integer</span></div>
+        <div class="model-field"><span>salary</span><span class="mf-type">integer</span></div>
+        <div class="model-field"><span>contract_years</span><span class="mf-type">smallint</span></div>
+        <div class="model-field"><span>anti_rival_clause</span><span class="mf-type">boolean</span></div>
+        <div class="model-field"><span>resale_pct</span><span class="mf-type">decimal</span></div>
+        <div class="model-field"><span>status</span><span class="mf-type">enum</span></div>
+      </div>
+    </div>
+    <div class="model-card">
+      <div class="model-card-title"><span class="mc-dot" style="background:#EAB308"></span>transactions</div>
+      <div class="model-fields">
+        <div class="model-field"><span>id</span><span class="mf-type">uuid</span></div>
+        <div class="model-field"><span>club_id</span><span class="mf-type">uuid FK</span></div>
+        <div class="model-field"><span>type</span><span class="mf-type">enum</span></div>
+        <div class="model-field"><span>description</span><span class="mf-type">text</span></div>
+        <div class="model-field"><span>amount</span><span class="mf-type">integer</span></div>
+        <div class="model-field"><span>season</span><span class="mf-type">smallint</span></div>
+        <div class="model-field"><span>month</span><span class="mf-type">smallint</span></div>
+        <div class="model-field"><span>created_at</span><span class="mf-type">timestamp</span></div>
+      </div>
+    </div>
+    <div class="model-card">
+      <div class="model-card-title"><span class="mc-dot" style="background:#EF4444"></span>club_facilities</div>
+      <div class="model-fields">
+        <div class="model-field"><span>id</span><span class="mf-type">uuid</span></div>
+        <div class="model-field"><span>club_id</span><span class="mf-type">uuid FK</span></div>
+        <div class="model-field"><span>facility_type</span><span class="mf-type">enum</span></div>
+        <div class="model-field"><span>level</span><span class="mf-type">smallint</span></div>
+        <div class="model-field"><span>capacity</span><span class="mf-type">integer</span></div>
+        <div class="model-field"><span>upgrade_cost</span><span class="mf-type">integer</span></div>
+        <div class="model-field"><span>is_owned</span><span class="mf-type">boolean</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DOCS -->
+<div class="docs">
+  <div class="docs-grid">
+
+    <div class="doc-card">
+      <h3><span class="dot"></span>Transferências — Componentes</h3>
+      <div class="doc-section">
+        <div class="doc-section-title">Componentes</div>
+        <ul class="doc-list">
+          <li>TransferBanner <span class="tag">status</span></li>
+          <li>TabBar (Contratar / Vender / Empréstimos)</li>
+          <li>FilterRow (pills + selects)</li>
+          <li>TransferPlayerCard <span class="tag">×n</span></li>
+          <li>HotBadge ("🔥 Disputado")</li>
+          <li>ProposalModal <span class="tag">bottom sheet</span></li>
+          <li>InputField / Select / Toggle <span class="tag">shared</span></li>
+          <li>BottomNav <span class="tag">shared</span></li>
+        </ul>
+      </div>
+      <div class="doc-section">
+        <div class="doc-section-title">Estados</div>
+        <ul class="doc-list">
+          <li>Janela aberta (exibido)</li>
+          <li>Janela fechada → banner cinza "Janela fechada. Volta em X dias"</li>
+          <li>Sem resultados de filtro → "Nenhum jogador encontrado 🔍"</li>
+          <li>Proposta enviada → toast "Proposta enviada! 📩 Aguarde resposta"</li>
+          <li>Proposta aceita → confetti verde + "Bem-vindo ao clube! 🎉"</li>
+          <li>Proposta recusada → toast "Proposta recusada 😔 Tente outro valor"</li>
+          <li>Sem saldo → botão disabled + "Sem grana 💸"</li>
+        </ul>
+      </div>
+      <div class="doc-section">
+        <div class="doc-section-title">Microcopy</div>
+        <ul class="doc-list">
+          <li>Banner → "🔥 Janela aberta! 18 dias restantes"</li>
+          <li>Sem clube → itálico "Sem clube" (livre, sem taxa)</li>
+          <li>Disputado → "🔥 Disputado" badge amarelo</li>
+          <li>Modal CTA → "Enviar proposta ✉️"</li>
+          <li>Toggle anti-rival → protege contra venda pra rival</li>
+          <li>Toggle revenda → "15% volta pro seu caixa"</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="doc-card">
+      <h3><span class="dot"></span>Finanças — Componentes</h3>
+      <div class="doc-section">
+        <div class="doc-section-title">Componentes</div>
+        <ul class="doc-list">
+          <li>FinanceStatCard <span class="tag">×4 grid</span></li>
+          <li>FairPlayBar</li>
+          <li>BarChart <span class="tag">CSS puro</span></li>
+          <li>TransactionsTable</li>
+          <li>ClubStructureCard <span class="tag">×n</span></li>
+          <li>UpgradeButton <span class="tag">outline</span></li>
+          <li>BottomNav <span class="tag">shared</span></li>
+        </ul>
+      </div>
+      <div class="doc-section">
+        <div class="doc-section-title">Estados</div>
+        <ul class="doc-list">
+          <li>Saldo positivo (exibido) — verde</li>
+          <li>Saldo negativo → vermelho + "No vermelho 🚨"</li>
+          <li>Fair play &lt; 70% → barra verde "Dentro do fair play ✅"</li>
+          <li>Fair play 70–85% → barra amarela "⚠️ Atenção"</li>
+          <li>Fair play &gt; 85% → barra vermelha "🚨 Risco de punição!"</li>
+          <li>Upgrade sem saldo → botão disabled + tooltip "R$ X necessários"</li>
+        </ul>
+      </div>
+      <div class="doc-section">
+        <div class="doc-section-title">Microcopy</div>
+        <ul class="doc-list">
+          <li>Fair play ok → "Tudo certo por aqui ✅"</li>
+          <li>Fair play apertado → "Cuidado com a folha! ⚠️"</li>
+          <li>Upgrade base → "Revela jovens melhores"</li>
+          <li>Construir estádio → "Construa o seu! 🏟️"</li>
+          <li>Transação receita → ícone + valor verde</li>
+          <li>Transação despesa → ícone + valor vermelho</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="doc-card">
+      <h3><span class="dot"></span>Fluxo de Navegação</h3>
+      <div class="doc-section">
+        <ul class="doc-list">
+          <li>BottomNav "Mercado" → Transferências (aba Contratar)</li>
+          <li>Transferências → tap "Fazer proposta" → ProposalModal</li>
+          <li>ProposalModal → "Enviar" → toast + lista atualizada</li>
+          <li>Transferências → aba "Vender" → lista do próprio elenco</li>
+          <li>Transferências → aba "Empréstimos" → ofertas recebidas/enviadas</li>
+          <li>BottomNav "Finanças" → tela Finanças</li>
+          <li>Finanças → "Melhorar" → modal de confirmação de upgrade</li>
+          <li>Finanças → "Construir próprio" → wizard de construção</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="doc-card">
+      <h3><span class="dot"></span>Decisões de UX</h3>
+      <div class="doc-section">
+        <ul class="doc-list">
+          <li>Modal de proposta é bottom sheet — padrão mobile nativo</li>
+          <li>Toggle anti-rival e revenda como opções visuais (não checkbox)</li>
+          <li>Banner de janela aberta no topo — urgência visual</li>
+          <li>Badge "Disputado" para leilão ativo — competição entre clubes</li>
+          <li>Jogador "Sem clube" destaca "Livre 🟢" — sem taxa de transferência</li>
+          <li>Fair play bar com meta visual — jogador entende o limite</li>
+          <li>Gráfico de barras CSS puro — não precisa de lib de charts</li>
+          <li>Estrutura do clube com níveis de estrela — gamificação clara</li>
+          <li>Transações com emoji por tipo — scan visual rápido</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
