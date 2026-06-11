@@ -2,6 +2,18 @@
 
 @theme {
   --color-accent: #22C55E;
+  --color-card: #111111;
+  --color-ui-border: #1F1F1F;
+  --color-muted: #A1A1AA;
+  --color-faint: #52525B;
+  --color-danger: #EF4444;
+  --color-warn: #EAB308;
+  --color-pos-gol: #7C3AED;
+  --color-pos-zag: #1D4ED8;
+  --color-pos-lat: #0369A1;
+  --color-pos-vol: #065F46;
+  --color-pos-mei: #854D0E;
+  --color-pos-ata: #9A3412;
 }
 
 body {
@@ -9,4 +21,5 @@ body {
   background-color: #0A0A0A;
   color: #FFFFFF;
   margin: 0;
+  -webkit-font-smoothing: antialiased;
 }
