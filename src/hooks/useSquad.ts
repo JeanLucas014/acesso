@@ -24,6 +24,8 @@ export function useSquad(saveId: string | null) {
         rating_avg_season,
         is_youth,
         loan_from_club_id,
+        injury_games_out,
+        suspension_games_out,
         players (*)
       `)
       .eq('save_id', saveId)
@@ -66,6 +68,8 @@ export function useSquad(saveId: string | null) {
         rating_avg_season: row.rating_avg_season ?? undefined,
         is_youth: row.is_youth,
         loan_from_club_id: row.loan_from_club_id ?? undefined,
+        injury_games_out: (row as Record<string, unknown>).injury_games_out as number ?? 0,
+        suspension_games_out: (row as Record<string, unknown>).suspension_games_out as number ?? 0,
       }
     })
 

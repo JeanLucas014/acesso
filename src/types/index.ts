@@ -1,6 +1,8 @@
 export type Position = 'GOL' | 'ZAG' | 'LAT' | 'VOL' | 'MEI' | 'ATA'
 export type Formation = '4-3-3' | '4-4-2' | '4-2-3-1' | '3-5-2' | '5-3-2'
 export type OriginType = 'neighborhood' | 'corporate' | 'historic'
+export type Tactic = 'pressure' | 'possession' | 'counter'
+export type RiskLevel = 'conservative' | 'balanced' | 'allout'
 
 export interface Player {
   id: string
@@ -72,7 +74,25 @@ export interface SquadPlayer extends Player {
   rating_avg_season?: number
   is_youth: boolean
   loan_from_club_id?: string
+  injury_games_out?: number
+  suspension_games_out?: number
 }
+
+export interface MatchEvent {
+  minute: number
+  type: 'goal' | 'yellow_card' | 'red_card' | 'injury'
+  playerId?: string
+  playerName?: string
+  team: 'home' | 'away'
+  assistPlayerId?: string
+  assistPlayerName?: string
+  severity?: 'leve' | 'moderada' | 'grave'
+  detail?: string
+}
+
+// Legacy alias kept for compatibility
+export type GameEventType = 'goal' | 'yellow_card' | 'red_card' | 'substitution' | 'injury'
+export type GameEvent = MatchEvent
 
 export interface Match {
   id: string
@@ -87,22 +107,77 @@ export interface Match {
   home_goals?: number
   away_goals?: number
   is_user_home: boolean
-  events: GameEvent[]
+  events: MatchEvent[]
   ratings: Record<string, number>
   formation_used?: string
   tactic_used?: string
   played_at: string
 }
 
-export type GameEventType = 'goal' | 'yellow_card' | 'red_card' | 'substitution' | 'injury'
+export interface MatchInput {
+  homeSquad: SquadPlayer[]
+  awaySquad: SquadPlayer[]
+  homeFormation: string
+  awayFormation: string
+  homeTactic: Tactic
+  awayTactic: Tactic
+  homeRisk: RiskLevel
+  isUserHome: boolean
+}
 
-export interface GameEvent {
-  type: GameEventType
-  minute: number
-  player_id?: string
-  player_name?: string
-  team: 'home' | 'away'
-  detail?: string
+export interface MatchResult {
+  homeGoals: number
+  awayGoals: number
+  events: MatchEvent[]
+  ratings: Record<string, number>
+  injuredPlayerIds: string[]
+  suspendedPlayerIds: string[]
+}
+
+export interface SquadUpdate {
+  playerId: string
+  fatigue: number
+  morale: number
+  injuryGamesOut: number
+  suspensionGamesOut: number
+}
+
+export interface Competition {
+  id: string
+  save_id: string
+  type: string
+  season: number
+  status: 'ongoing' | 'finished'
+  state?: string
+  created_at?: string
+}
+
+export interface Fixture {
+  id: string
+  competition_id: string
+  round: number
+  home_club_id?: string
+  home_club_name: string
+  away_club_id?: string
+  away_club_name: string
+  home_goals?: number
+  away_goals?: number
+  is_played: boolean
+  is_user_game: boolean
+  scheduled_at?: string
+}
+
+export interface Standing {
+  club_id: string
+  club_name: string
+  played: number
+  won: number
+  drawn: number
+  lost: number
+  goals_for: number
+  goals_against: number
+  goal_diff: number
+  points: number
 }
 
 export interface DraftPlayer {
