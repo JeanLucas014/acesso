@@ -31,7 +31,7 @@ function hashCode(str: string): number {
   return Math.abs(h)
 }
 
-function makeLcg(seed: number) {
+export function makeLcg(seed: number) {
   let s = seed >>> 0
   return () => {
     s = (Math.imul(1664525, s) + 1013904223) >>> 0

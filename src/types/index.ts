@@ -180,6 +180,71 @@ export interface Standing {
   points: number
 }
 
+export interface Transfer {
+  id: string
+  save_id: string
+  player_id?: string
+  type: 'buy' | 'sell' | 'loan_in' | 'loan_out' | 'free'
+  fee_brl: number
+  wage_brl?: number
+  contract_seasons: number
+  from_club_id?: string
+  from_club_name?: string
+  to_club_id?: string
+  to_club_name?: string
+  season?: number
+  window?: string
+  clauses?: { resale_pct?: number; buyback_fee?: number; rival_block?: boolean }
+  status: 'pending' | 'accepted' | 'rejected' | 'countered'
+  counter_fee?: number
+  created_at?: string
+}
+
+export interface Finance {
+  id: string
+  save_id: string
+  season: number
+  month: number
+  type: 'income' | 'expense'
+  category: 'ticket' | 'tv_rights' | 'sponsorship' | 'transfer_fee' | 'wage' | 'prize' | 'maintenance'
+  amount_brl: number
+  description?: string
+  created_at?: string
+}
+
+export interface MarketPlayer {
+  id: string
+  name: string
+  age: number
+  nationality: string
+  position: Position
+  rating_overall: number
+  rating_pace: number
+  rating_shooting: number
+  rating_passing: number
+  rating_dribbling: number
+  rating_defending: number
+  rating_physical: number
+  rating_mental: number
+  potential: number
+  market_value_brl: number
+  wage_brl: number
+  current_club_name?: string
+  is_free_agent: boolean
+  seller_reputation: number
+  division: string
+  is_hot?: boolean
+}
+
+export type FairPlayLevel = 'ok' | 'warning' | 'alert' | 'critical'
+
+export interface FairPlayStatus {
+  ratio: number
+  level: FairPlayLevel
+  label: string
+  description: string
+}
+
 export interface DraftPlayer {
   localId: string
   name: string
