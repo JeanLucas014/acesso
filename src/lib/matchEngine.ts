@@ -114,10 +114,10 @@ function generateEvents(
 
   function addInjuries(squad: SquadPlayer[], team: 'home' | 'away') {
     squad.forEach(p => {
-      if (Math.random() < 0.04) {
+      if (Math.random() < 0.015) {
         const minute = Math.floor(Math.random() * 80) + 1
         const r = Math.random()
-        const severity: MatchEvent['severity'] = r < 0.6 ? 'leve' : r < 0.9 ? 'moderada' : 'grave'
+        const severity: MatchEvent['severity'] = r < 0.7 ? 'leve' : r < 0.9 ? 'moderada' : 'grave'
         events.push({ minute, type: 'injury', playerId: p.id, playerName: p.name, team, severity })
       }
     })
@@ -197,9 +197,9 @@ export function applyMatchEffects(
     const injuryEv = events.find(e => e.type === 'injury' && e.playerId === p.id && e.team === userTeam)
     let injuryGamesOut = 0
     if (injuryEv) {
-      if (injuryEv.severity === 'leve')     injuryGamesOut = Math.floor(Math.random() * 2) + 2
-      else if (injuryEv.severity === 'moderada') injuryGamesOut = Math.floor(Math.random() * 4) + 5
-      else                                   injuryGamesOut = Math.floor(Math.random() * 6) + 10
+      if (injuryEv.severity === 'leve')          injuryGamesOut = Math.floor(Math.random() * 2) + 1
+      else if (injuryEv.severity === 'moderada') injuryGamesOut = Math.floor(Math.random() * 3) + 3
+      else                                       injuryGamesOut = Math.floor(Math.random() * 5) + 6
     }
 
     const redEv = events.find(e => e.type === 'red_card' && e.playerId === p.id && e.team === userTeam)

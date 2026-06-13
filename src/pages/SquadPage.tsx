@@ -91,7 +91,7 @@ export function SquadPage() {
     : players.filter((p) => p.position_main === filter)
 
   return (
-    <div className="max-w-[390px] mx-auto px-4 pt-4 pb-24">
+    <div className="max-w-[390px] md:max-w-4xl mx-auto px-4 pt-4 pb-24 md:pb-8">
       {/* Header */}
       <header className="flex items-baseline justify-between mb-4">
         <h1 className="text-[22px] font-bold">Elenco</h1>
@@ -144,3 +144,4 @@ export function SquadPage() {
     </div>
   )
 }
+

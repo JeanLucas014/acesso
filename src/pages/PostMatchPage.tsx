@@ -13,11 +13,11 @@ function ratingColor(r: number) {
 
 function eventIcon(type: MatchEvent['type']) {
   switch (type) {
-    case 'goal':        return '⚽'
-    case 'yellow_card': return '🟨'
-    case 'red_card':    return '🟥'
-    case 'injury':      return '🤕'
-    default:            return '•'
+    case 'goal':        return 'âš½'
+    case 'yellow_card': return 'ðŸŸ¨'
+    case 'red_card':    return 'ðŸŸ¥'
+    case 'injury':      return 'ðŸ¤•'
+    default:            return '"¢'
   }
 }
 
@@ -30,6 +30,8 @@ function eventDotColor(type: MatchEvent['type']) {
   }
 }
 
+interface StarterInfo { id: string; name: string; position: string }
+
 interface LocationState {
   matchId: string
   isUserHome: boolean
@@ -37,6 +39,7 @@ interface LocationState {
   opponentName: string
   round: number
   result: { homeGoals: number; awayGoals: number }
+  starterInfo?: StarterInfo[]
 }
 
 export function PostMatchPage() {
@@ -67,7 +70,7 @@ export function PostMatchPage() {
       <div className="max-w-[390px] mx-auto px-4 pt-16 pb-24 text-center">
         <p className="text-sm text-muted">Nenhum jogo encontrado.</p>
         <button onClick={() => navigate('/competition')} className="mt-4 text-accent text-sm font-semibold">
-          Ver campeonato →
+          Ver campeonato â†’
         </button>
         <BottomNav />
       </div>
@@ -107,21 +110,23 @@ export function PostMatchPage() {
   // Morale info
   const moraleDelta = isWin ? 8 : isDraw ? 2 : -6
   const moraleLabel = isWin ? `Moral +${moraleDelta} (vitória)` : isDraw ? `Moral +${moraleDelta} (empate)` : `Moral ${moraleDelta} (derrota)`
-  const moraleEmoji = isWin ? '😄' : isDraw ? '😐' : '😟'
+  const moraleEmoji = isWin ? 'ðŸ˜„' : isDraw ? 'ðŸ˜' : 'ðŸ˜Ÿ'
 
   // Injuries
   const injuryEvents = events.filter(e => e.type === 'injury' && e.team === userTeam)
 
-  // Player name from ratings (we only have IDs; the match stores playerName in events)
+  const starterInfo = state.starterInfo ?? []
+
   function playerNameForId(id: string): string {
+    const starter = starterInfo.find(s => s.id === id)
+    if (starter) return starter.name
     const ev = events.find(e => e.playerId === id)
-    return ev?.playerName ?? id.slice(0, 8)
+    return ev?.playerName ?? '"“'
   }
 
   function playerPosForId(id: string): string {
-    const goalEv = events.find(e => e.type === 'goal' && e.playerId === id)
-    if (goalEv) return goalEv.team === userTeam ? 'ATA' : 'ATA'
-    return '–'
+    const starter = starterInfo.find(s => s.id === id)
+    return starter?.position ?? '"“'
   }
 
   async function handleNextRound() {
@@ -131,11 +136,11 @@ export function PostMatchPage() {
   }
 
   return (
-    <div className="max-w-[390px] mx-auto px-4 pt-4 pb-24">
+    <div className="max-w-[390px] md:max-w-3xl mx-auto px-4 pt-4 pb-24 md:pb-8">
       {/* Scoreboard */}
       <div className="text-center pt-2 pb-4">
         <p className="text-[11px] font-semibold text-faint uppercase tracking-wide mb-3">
-          {competition?.type === 'estadual' ? 'Campeonato Estadual' : 'Competição'} · Rodada {match.round}
+          {competition?.type === 'estadual' ? 'Campeonato Estadual' : 'Competição'} Â· Rodada {match.round}
         </p>
         <div className="flex items-center justify-center gap-4 mb-3">
           <div className="flex-1 text-center">
@@ -154,7 +159,7 @@ export function PostMatchPage() {
           className="inline-flex items-center gap-1 px-3 py-1 rounded-md text-xs font-bold"
           style={{ background: resultBg, color: resultColor }}
         >
-          {isWin ? '🏆' : isDraw ? '🤝' : '💔'} {resultLabel}
+          {isWin ? 'ðŸ†' : isDraw ? 'ðŸ¤' : 'ðŸ’”'} {resultLabel}
         </span>
       </div>
 
@@ -176,10 +181,10 @@ export function PostMatchPage() {
                 <span className="text-sm flex-shrink-0">{eventIcon(ev.type)}</span>
                 <div className="flex-1">
                   <p className={`text-[13px] font-medium leading-tight ${ev.team !== userTeam ? 'text-muted' : ''}`}>
-                    {ev.type === 'goal' ? `Gol — ${ev.playerName}` :
-                     ev.type === 'yellow_card' ? `Cartão Amarelo — ${ev.playerName}` :
-                     ev.type === 'red_card' ? `Cartão Vermelho — ${ev.playerName}` :
-                     `Lesão — ${ev.playerName}`}
+                    {ev.type === 'goal' ? `Gol "” ${ev.playerName}` :
+                     ev.type === 'yellow_card' ? `Cartão Amarelo "” ${ev.playerName}` :
+                     ev.type === 'red_card' ? `Cartão Vermelho "” ${ev.playerName}` :
+                     `Lesão "” ${ev.playerName}`}
                   </p>
                   {ev.assistPlayerName && (
                     <p className="text-[11px] text-faint mt-0.5">Assist: {ev.assistPlayerName}</p>
@@ -188,7 +193,7 @@ export function PostMatchPage() {
                     <p className="text-[11px] text-faint mt-0.5">{opponentName}</p>
                   )}
                   {ev.severity && (
-                    <p className="text-[11px] text-danger mt-0.5">Lesão {ev.severity} — afastado</p>
+                    <p className="text-[11px] text-danger mt-0.5">Lesão {ev.severity} "” afastado</p>
                   )}
                 </div>
               </div>
@@ -238,9 +243,9 @@ export function PostMatchPage() {
             className="flex items-center gap-2 px-3 py-2.5 mb-2 rounded-lg"
             style={{ background: 'rgba(239,68,68,0.08)', border: '0.5px solid rgba(239,68,68,0.2)' }}
           >
-            <span className="text-base">🤕</span>
+            <span className="text-base">ðŸ¤•</span>
             <p className="text-[12px] text-danger font-medium">
-              {ev.playerName} saiu machucado — Lesão {ev.severity ?? 'leve'}
+              {ev.playerName} saiu machucado "” Lesão {ev.severity ?? 'leve'}
             </p>
           </div>
         ))}
@@ -251,10 +256,11 @@ export function PostMatchPage() {
         onClick={handleNextRound}
         className="w-full py-4 rounded-lg text-sm font-bold bg-accent text-[#0A0A0A] flex items-center justify-center gap-2"
       >
-        Próxima rodada →
+        Próxima rodada â†’
       </button>
 
       <BottomNav />
     </div>
   )
 }
+

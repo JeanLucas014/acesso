@@ -12,7 +12,7 @@ const NAV_ITEMS = [
 export function BottomNav() {
   return (
     <nav
-      className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-[#0A0A0A] flex justify-around pb-5 pt-2 z-50"
+      className="md:hidden fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-[#0A0A0A] flex justify-around pb-5 pt-2 z-50"
       style={{ borderTop: '0.5px solid #1F1F1F' }}
     >
       {NAV_ITEMS.map(({ to, label, Icon }) => (

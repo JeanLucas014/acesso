@@ -75,7 +75,7 @@ export function CompetitionPage() {
   const userPosition = standings.findIndex(s => s.club_id === userClubId) + 1
 
   return (
-    <div className="max-w-[390px] mx-auto px-4 pt-4 pb-24">
+    <div className="max-w-[390px] md:max-w-4xl mx-auto px-4 pt-4 pb-24 md:pb-8">
       {/* Header */}
       <header className="mb-5">
         <p className="text-[11px] font-semibold text-faint uppercase tracking-wide mb-1">
@@ -202,3 +202,4 @@ export function CompetitionPage() {
     </div>
   )
 }
+

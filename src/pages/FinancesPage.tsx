@@ -71,7 +71,7 @@ export function FinancesPage() {
   }
 
   return (
-    <div className="max-w-[390px] mx-auto px-4 pt-4 pb-24 lg:max-w-4xl">
+    <div className="max-w-[390px] md:max-w-4xl mx-auto px-4 pt-4 pb-24 md:pb-8">
       <header className="mb-5">
         <p className="text-[11px] font-semibold text-faint uppercase tracking-wide mb-0.5">Temporada {save?.season_current ?? 1}</p>
         <h1 className="text-[22px] font-bold">Finanças</h1>
@@ -215,7 +215,7 @@ export function FinancesPage() {
                 <div className="flex-1 min-w-0">
                   <p className="text-[12px] font-medium truncate">{f.description ?? categoryLabel(f.category)}</p>
                   <p className="text-[10px] text-faint">
-                    {categoryLabel(f.category)} · {fmtMonth(f.month)}
+                    {categoryLabel(f.category)} Â· {fmtMonth(f.month)}
                   </p>
                 </div>
                 <span
@@ -246,7 +246,7 @@ export function FinancesPage() {
             </div>
             <p className="text-[11px] text-faint mb-3">
               {[8_000, 12_000, 20_000, 35_000, 50_000][stadiumLevel - 1]?.toLocaleString('pt-BR')} lugares
-              {stadiumLevel < 5 && ` → ${[12_000, 20_000, 35_000, 50_000][stadiumLevel - 1]?.toLocaleString('pt-BR')} com upgrade`}
+              {stadiumLevel < 5 && ` â†’ ${[12_000, 20_000, 35_000, 50_000][stadiumLevel - 1]?.toLocaleString('pt-BR')} com upgrade`}
             </p>
             {stadiumLevel < 5 && stadiumCost != null ? (
               <button
@@ -254,7 +254,7 @@ export function FinancesPage() {
                 className="w-full py-2.5 rounded-lg text-[12px] font-bold border disabled:opacity-40"
                 style={{ borderColor: '#22C55E', color: '#22C55E', background: 'rgba(34,197,94,0.06)' }}
               >
-                Expandir — {fmtBrl(stadiumCost)}
+                Expandir "” {fmtBrl(stadiumCost)}
               </button>
             ) : (
               <p className="text-[11px] text-accent font-semibold text-center">Nível máximo atingido</p>
@@ -272,7 +272,7 @@ export function FinancesPage() {
               </span>
             </div>
             <p className="text-[11px] text-faint mb-3">
-              {['Base local', 'Regional', 'Estadual', 'Nacional', 'Elite'][academyLevel - 1]} · Revelação de jovens talentos
+              {['Base local', 'Regional', 'Estadual', 'Nacional', 'Elite'][academyLevel - 1]} Â· Revelação de jovens talentos
             </p>
             {academyLevel < 5 && academyCost != null ? (
               <button
@@ -280,7 +280,7 @@ export function FinancesPage() {
                 className="w-full py-2.5 rounded-lg text-[12px] font-bold border disabled:opacity-40"
                 style={{ borderColor: '#22C55E', color: '#22C55E', background: 'rgba(34,197,94,0.06)' }}
               >
-                Melhorar — {fmtBrl(academyCost)}
+                Melhorar "” {fmtBrl(academyCost)}
               </button>
             ) : (
               <p className="text-[11px] text-accent font-semibold text-center">Nível máximo atingido</p>
@@ -293,3 +293,4 @@ export function FinancesPage() {
     </div>
   )
 }
+

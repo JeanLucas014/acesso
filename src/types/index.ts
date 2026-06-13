@@ -60,6 +60,8 @@ export interface UserSave {
   youth_academy_level: number
   stadium_level: number
   origin_type?: string
+  default_lineup?: Record<string, string>
+  default_formation?: string
   created_at?: string
 }
 

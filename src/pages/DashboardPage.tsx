@@ -61,7 +61,7 @@ export function DashboardPage() {
   const crestTemplate = save.club_crest_template ?? store.clubCrestTemplate ?? 1
 
   return (
-    <div className="max-w-[390px] mx-auto px-4 pt-4 pb-24">
+    <div className="max-w-[390px] md:max-w-4xl mx-auto px-4 pt-4 pb-24 md:pb-8">
       {/* Club header */}
       <header className="flex items-center gap-3 mb-6">
         <ClubCrest name={clubName} primaryColor={primaryColor} template={crestTemplate} size={48} />
@@ -74,7 +74,7 @@ export function DashboardPage() {
       </header>
 
       {/* Stat cards */}
-      <section className="grid grid-cols-3 gap-2 mb-4">
+      <section className="grid grid-cols-3 md:grid-cols-4 gap-2 mb-4">
         <StatCard
           icon="💰"
           value={`R$${formatBRL(save.budget_brl ?? 0)}`}

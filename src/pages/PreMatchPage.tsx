@@ -1,7 +1,8 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Swords } from 'lucide-react'
+import { Swords, Bookmark } from 'lucide-react'
 import { BottomNav } from '../components/BottomNav'
+import { supabase } from '../lib/supabase'
 import { PitchField, getFormationSlots } from '../components/PitchField'
 import { PositionBadge } from '../components/PositionBadge'
 import { useSave } from '../hooks/useSave'
@@ -58,6 +59,42 @@ export function PreMatchPage() {
   const [risk, setRisk] = useState<RiskLevel>('balanced')
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null)
   const [simulating, setSimulating] = useState(false)
+  const [savingDefault, setSavingDefault] = useState(false)
+  const [defaultSaved, setDefaultSaved] = useState(false)
+
+  // Load default lineup from save when players are ready
+  useEffect(() => {
+    if (!save?.default_lineup || players.length === 0) return
+    const dl = save.default_lineup as Record<string, string>
+    const df = (save.default_formation as Formation) ?? '4-3-3'
+    if (Object.keys(dl).length === 0) return
+    // Validate: only keep slots whose player is still in squad
+    const playerIds = new Set(players.map(p => p.id))
+    const valid: Record<string, string> = {}
+    for (const [slot, pid] of Object.entries(dl)) {
+      if (playerIds.has(pid)) valid[slot] = pid
+    }
+    setFormation(df)
+    setLineup(valid)
+  }, [save?.id, players.length]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Show warning for unavailable starters from default lineup
+  const unavailableDefault = Object.values(lineup).filter(pid => {
+    const p = players.find(sq => sq.id === pid)
+    return p && ((p.injury_games_out ?? 0) > 0 || (p.suspension_games_out ?? 0) > 0 || p.fatigue >= 80)
+  })
+
+  async function saveDefaultLineup() {
+    if (!save?.id || !allFilled) return
+    setSavingDefault(true)
+    await supabase.from('user_saves').update({
+      default_lineup: lineup,
+      default_formation: formation,
+    }).eq('id', save.id)
+    setSavingDefault(false)
+    setDefaultSaved(true)
+    setTimeout(() => setDefaultSaved(false), 2500)
+  }
 
   const slots     = getFormationSlots(formation)
   const filled    = slots.filter(s => lineup[s.id]).length
@@ -140,8 +177,9 @@ export function PreMatchPage() {
 
     setSimulating(false)
     if (matchId) {
-      navigate('/match/post', {
-        state: { matchId, isUserHome, userClubName: save.club_name, opponentName, round: fixture.round, result },
+      const starterInfo = starters.map(p => ({ id: p.id, name: p.name, position: p.position_main }))
+      navigate('/match/view', {
+        state: { matchId, isUserHome, userClubName: save.club_name, opponentName, round: fixture.round, result, starterInfo },
       })
     }
   }, [allFilled, nextFixture, save, lineup, players, formation, tactic, risk, saveResult, navigate])
@@ -167,7 +205,7 @@ export function PreMatchPage() {
   if (!nextFixture) {
     return (
       <div className="max-w-[390px] mx-auto px-4 pt-16 pb-24 text-center">
-        <p className="text-4xl mb-4">🏆</p>
+        <p className="text-4xl mb-4">ðŸ†</p>
         <h2 className="text-lg font-bold mb-2">Campeonato encerrado!</h2>
         <p className="text-sm text-muted">Todos os jogos foram disputados esta temporada.</p>
         <BottomNav />
@@ -191,11 +229,11 @@ export function PreMatchPage() {
     difficultyLabel === 'Favorito' ? '#22C55E' : '#EAB308'
 
   return (
-    <div className="max-w-[390px] mx-auto px-4 pt-4 pb-24">
+    <div className="max-w-[390px] md:max-w-3xl mx-auto px-4 pt-4 pb-24 md:pb-8">
       {/* Header */}
       <header className="mb-4">
         <p className="text-[11px] font-semibold text-faint uppercase tracking-wide mb-1">
-          {competition.type === 'estadual' ? 'Campeonato Estadual' : competition.type} · Rodada {fixture.round}
+          {competition.type === 'estadual' ? 'Campeonato Estadual' : competition.type} Â· Rodada {fixture.round}
         </p>
         <div className="flex items-center justify-between">
           <h1 className="text-[20px] font-bold">Pré-Jogo</h1>
@@ -222,6 +260,19 @@ export function PreMatchPage() {
           </button>
         ))}
       </div>
+
+      {/* Unavailable starters warning */}
+      {unavailableDefault.length > 0 && (
+        <div
+          className="flex items-start gap-2 px-3 py-2.5 rounded-lg mb-2 border-[0.5px]"
+          style={{ background: 'rgba(234,179,8,0.08)', borderColor: 'rgba(234,179,8,0.2)' }}
+        >
+          <span className="text-sm flex-shrink-0 mt-0.5">⚠️</span>
+          <p className="text-[12px] text-yellow-400 leading-snug">
+            {unavailableDefault.length} jogador{unavailableDefault.length > 1 ? 'es' : ''} do time titular {unavailableDefault.length > 1 ? 'estão' : 'está'} indisponível{unavailableDefault.length > 1 ? 'is' : ''}. Substitua antes de jogar.
+          </p>
+        </div>
+      )}
 
       {/* Filled counter */}
       <div className="flex justify-between text-xs mb-2">
@@ -263,7 +314,7 @@ export function PreMatchPage() {
                 >
                   <PositionBadge position={p.position} />
                   <span className="flex-1 text-xs font-medium truncate">{p.name}</span>
-                  <span className="text-[11px] text-faint">{p.age}a · {p.rating_overall}</span>
+                  <span className="text-[11px] text-faint">{p.age}a Â· {p.rating_overall}</span>
                 </button>
               )
             })}
@@ -334,7 +385,19 @@ export function PreMatchPage() {
         {simulating || saving ? 'Simulando...' : 'Simular Jogo'}
       </button>
 
+      {/* Save as default */}
+      <button
+        onClick={saveDefaultLineup}
+        disabled={!allFilled || savingDefault}
+        className="w-full mt-2 py-2.5 rounded-lg text-xs font-semibold border border-ui-border text-faint disabled:opacity-40 flex items-center justify-center gap-1.5 transition-colors"
+        style={defaultSaved ? { borderColor: '#22C55E', color: '#22C55E' } : {}}
+      >
+        <Bookmark size={13} />
+        {defaultSaved ? 'Time padrão salvo!' : savingDefault ? 'Salvando...' : 'Salvar como time padrão'}
+      </button>
+
       <BottomNav />
     </div>
   )
 }
+
